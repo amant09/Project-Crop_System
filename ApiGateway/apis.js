@@ -1,66 +1,71 @@
 const express = require('express');
-const axios = require('axios');
 const router = express.Router();
-const controller = require('./Controller/ApiControl');
-const {requireAuth} = require('./AuthJwt/UserAuth')
+const app = express();
+const cookieParser = require('cookie-parser');
+const axios = require('axios');
+const controller = require('./Controller/AuthControl');
+const {farmerAuth} = require('./AuthJwt/UserAuth');
+const {adminAuth} = require('./AuthJwt/adminAuth');
+const {dealerAuth} = require('./AuthJwt/dealerAuth');
+const admin = require('./Controller/AdminController');
+const dealer = require('./Controller/DealerController');
+const farmer = require('./Controller/FarmerController');
+app.use(cookieParser());
 
 
-router.get('/signup', controller.signup_get);
-router.post('/signup', controller.signup_post);
-router.get('/login', controller.login_get);
-router.post('/login', controller.login_post);
+//Farmer Login & Signup
 
-router.get('/farmer/data',requireAuth, controller.getFarmerData);
+router.post('/farmer/signup', controller.farmer_signup_post);
+router.post('/farmer/login', controller.farmer_login_post);
+router.get('/farmer/logout', controller.farmer_logout_get);
 
-router.get('/dealer/data',requireAuth, controller.getDealerData);
 
-router.get('/admin/data',requireAuth, controller.getAdminData);
+//Admin Login & Signup
 
-router.get('/dealer/searchcrop/:name',requireAuth, controller.searchCrop)
+router.post('/admin/signup', controller.admin_signup_post);
+router.post('/admin/login', controller.admin_login_post);
+router.get('/admin/logout', controller.admin_logout_get);
 
-//Post dealer
-router.post('/dealer/add',(req,res)=>{
-    axios.post('http://localhost:5000/dealer/signup',req.body).then((response)=>{
-        res.send(response.data);
-    })
-})
 
-//Post farmer
-router.post('/farmer/add',(req,res)=>{
-    axios.post('http://localhost:3000/farmer/signup',req.body).then((response)=>{
-        res.send(response.data);
-    })
-})
+//Dealer Login & Signup
 
-//Patch farmer
-router.patch('/farmer/update/:id',(req,res)=>{
-    const id = req.params.id;
-    axios.patch('http://localhost:3000/farmer/signup'+id,req.body).then((response)=>{
-        res.send(response.data);
-    })
-})
-
-//Patch dealer
-router.patch('/dealer/update/:id',(req,res)=>{
-    const id = req.params.id;
-    axios.patch('http://localhost:5000/dealer/signup'+id,req.body).then((response)=>{
-        res.send(response.data);
-    })
-})
+router.post('/dealer/signup', controller.dealer_signup_post);
+router.post('/dealer/login', controller.dealer_login_post);
+router.get('/dealer/logout', controller.dealer_logout_get);
 
 
 
+//PUBLIC ACCESS
+router.get('/viewcrop', farmer.viewCrop );
 
 
+//Admin Functionalities
 
+router.get('/farmer/data',adminAuth, admin.getFarmerData);
 
+router.get('/dealer/data',adminAuth, admin.getDealerData);
 
+router.get('/admin/data',adminAuth, admin.getAdminData);
 
+router.delete('/deletefarmer/:id',adminAuth, admin.deleteFarmer);
 
+router.delete('/deletedealer/:id',adminAuth, admin.deleteDealer);
 
+//DEALER functionalities
 
+router.get('/dealer/searchcrop/:name', dealer.searchCrop);
 
+router.get('/dealer/getcrops', dealer.viewCrop);
 
+router.post('/dealerprofile/buy', dealerAuth, dealer.buyCrop );
 
+//Farmer Functionalities
 
-module.exports = router
+router.post('/farmerdetail',farmerAuth, farmer.addFarmer);
+router.post('/postCrop',farmerAuth, farmer.addCrop);
+router.put('/updatefarmerdetail/:id',farmerAuth, farmer.updateFarmer);
+router.get('/farmer/myprofile',farmerAuth, farmer.viewProfile );
+//router.delete('/deleteCrop/:id',farmerAuth, farmer.deleteCrop);
+
+module.exports = router;
+

@@ -1,0 +1,646 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Agriculture Crop System API",
+    "description": "To help farmers sell their produce via web"
+  },
+  "host": "localhost:4545",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Authentication API",
+      "description": "API for assigning roles"
+    },
+    {
+      "name": "Admin Service",
+      "description": "API for Admin roles"
+    },
+    {
+      "name": "Farmer Service",
+      "description": "API for Farmer roles"
+    },
+    {
+      "name": "Dealer Service",
+      "description": "API for Dealer roles"
+    }
+  ],
+  "paths": {
+    "/admin/signup": {
+      "post": {
+        "tags":[
+          "Authentication API"
+        ],
+        "description": "Create new Admin in the system",
+        "parameters": [
+          {
+            "name": "Admin",
+            "in":"body",
+            "description": "Admin that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Signup"
+            }
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200":{
+            "description": "New Admin Created"
+            
+          }
+        }
+      }
+    },
+    "/admin/login":{
+      "post":{
+        "tags":[
+          "Authentication API"
+        ],
+        "description": "Login with new Admin in the system",
+        "parameters": [
+          {
+            "name": "Admin",
+            "in":"body",
+            "description": "Details for logging in the admin",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200":{
+            "description": " Admin Logged in"
+            
+          }
+        }
+      }
+    },
+    "/admin/logout":{
+      "get": {
+        "tags": [
+          "Authentication API"
+        ],
+        "summary": "Log out of the system",
+        "responses": {
+          "200": {
+            "description": "OK"   
+        }
+      }
+    }
+
+    },
+    "/farmer/signup": {
+      "post": {
+        "tags":[
+          "Authentication API"
+        ],
+        "description": "Create new Farmer in the system",
+        "parameters": [
+          {
+            "name": "Farmer",
+            "in":"body",
+            "description": "New Farmer that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Signup"
+            }
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200":{
+            "description": "New Farmer Created"
+           
+          }
+        }
+      }
+    },
+    "/farmer/login":{
+      "post":{
+        "tags":[
+          "Authentication API"
+        ],
+        "description": "Login with new Farmer in the system",
+        "parameters": [
+          {
+            "name": "Farmer",
+            "in":"body",
+            "description": "Details for logging in the farmer",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "responses": {
+          "200":{
+            "description": "Farmer Logged in"
+            
+          }
+        }
+      }
+    },
+    "/farmer/logout":{
+      "get": {
+        "tags": [
+          "Authentication API"
+        ],
+        "summary": "Log out of the system",
+        "responses": {
+          "200": {
+            "description": "OK"   
+        }
+      }
+    }
+   },
+   "/dealer/signup": {
+    "post": {
+      "tags":[
+        "Authentication API"
+      ],
+      "description": "Create new Dealer in the system",
+      "parameters": [
+        {
+          "name": "Dealer",
+          "in":"body",
+          "description": "New Dealer that we want to create",
+          "schema": {
+            "$ref": "#/definitions/Signup"
+          }
+        }
+      ],
+      "produces":[
+        "application/json"
+      ],
+      "responses": {
+        "200":{
+          "description": "New Farmer Created"
+         
+        }
+      }
+    }
+   },
+   
+   "/dealer/login":{
+    "post":{
+      "tags":[
+        "Authentication API"
+      ],
+      "description": "Login with new Dealer in the system",
+      "parameters": [
+        {
+          "name": "Dealer",
+          "in":"body",
+          "description": "Details for logging in the dealer",
+          "schema": {
+            "$ref": "#/definitions/Login"
+          }
+        }
+      ],
+      "produces":[
+        "application/json"
+      ],
+      "responses": {
+        "200":{
+          "description": "Dealer Logged in"
+         
+        }
+      }
+    }
+   },
+   "/dealer/logout":{
+    "get": {
+      "tags": [
+        "Authentication API"
+      ],
+      "summary": "Log out of the system",
+      "responses": {
+        "200": {
+          "description": "OK"   
+        }
+       }
+      }
+     },
+     "/farmer/data":{
+      "get": {
+        "tags": [
+          "Admin Service"
+        ],
+        "summary": "Gets the list of all available Farmers",
+        "responses": {
+          "200": {
+            "description": "OK"   
+          }
+         }
+        }
+       },
+       "/dealer/data":{
+        "get": {
+          "tags": [
+            "Admin Service"
+          ],
+          "summary": "Gets the list of all available Dealers",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema":{
+                "$ref": "#/definitions/Admin"
+              }   
+            }
+           }
+          }
+         },
+        "/deletefarmer/{id}": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of Farmer that we want to find",
+              "type": "string"
+            }
+          ],
+          "delete": {
+            "summary": "Delete Farmer with given ID",
+            "tags": [
+              "Admin Service"
+            ],
+            "responses": {
+              "200": {
+                "description": "User is deleted",
+                "schema": {
+                  "$ref": "#/definitions/Admin"
+                }
+               
+              },
+              "404": {
+                "description": "Farmer Not Found"
+              }
+            }
+          }
+        },
+        "/deletedealer/{id}": {
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "description": "ID of Dealer that we want to find",
+              "type": "string"
+            }
+          ],
+          "delete": {
+            "summary": "Delete Dealer with given ID",
+            "tags": [
+              "Admin Service"
+            ],
+            "responses": {
+              "200": {
+                "description": "User is deleted",
+                "schema": {
+                  "$ref": "#/definitions/Admin"
+                }
+               
+              },
+              "404": {
+                "description": "Farmer Not Found"
+              }
+            }
+          }
+        },
+        "/dealer/getcrops":{
+          "get": {
+            "tags": [
+              "Dealer Service"
+            ],
+            "summary": "Gets the list of all available Crops",
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema":{
+                  "$ref": "#/definitions/Crops"
+                }   
+              }
+             }
+            }
+           },
+           "/dealer/searchcrop/{name}":{
+            "parameters": [
+              {
+                "name": "name",
+                "in": "path",
+                "required": true,
+                "description": "Name of Crop that dealer want to find",
+                "type": "string"
+              }
+            ],
+            "get": {
+              "tags": [
+                "Dealer Service"
+              ],
+              "summary": "Displays the crop details of the searched crop",
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema":{
+                    "$ref": "#/definitions/Admin"
+                  }   
+                }
+               }
+              }
+             }, 
+             "/dealerprofile/buy": {
+              "post": {
+                "tags":[
+                  "Dealer Service"
+                ],
+                "description": "Crop Dealer want to Buy.",
+                "parameters": [
+                  {
+                    "name": "CropName",
+                    "in":"body",
+                    "description": "CropName and quantity to buy",
+                    "schema": {
+                      "$ref": "#/definitions/Crop"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200":{
+                    "description": "Purchase Successful"
+                  }
+                }
+              }
+             },
+             "/postcrop": {
+              "post": {
+                "tags":[
+                  "Farmer Service"
+                ],
+                "description": "Crop to be added by farmer",
+                "parameters": [
+                  {
+                    "name": "Crop",
+                    "in":"body",
+                    "description": "Details of crop",
+                    "schema": {
+                      "$ref": "#/definitions/Crops"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200":{
+                    "description": "Crop Added successfully"
+                  }
+                }
+              }
+             },
+             "/farmerdetail": {
+              "post": {
+                "tags":[
+                  "Farmer Service"
+                ],
+                "description": "Farmer Profile to be added",
+                "parameters": [
+                  {
+                    "name": "Profile",
+                    "in":"body",
+                    "description": "Update profile of farmer",
+                    "schema": {
+                      "$ref": "#/definitions/Profile"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200":{
+                    "description": "Farmer Profile  Added successfully"
+                  }
+                }
+              }
+             },
+             "/farmerprofile/{id}": {
+              "parameters": [
+                {
+                  "name": "id",
+                  "in": "path",
+                  "required": true,
+                  "description": "ID of farmer to be updated",
+                  "type": "string"
+                }
+              ],
+              "put": {
+                "summary": "Updates the information",
+                "tags": [
+                  "Farmer Service"
+                ],
+                "parameters": [
+                  {"name": "Update Profile",
+                    "in": "body",
+                    "description": "Farmer with new data",
+                    "schema": {
+                      "$ref": "#definitions/Profile"
+                    }
+                  }
+
+                ],
+                "responses": {
+                  "200": {
+                    "description": "Profile updated successfully",
+                    "schema": {
+                      "$ref": "#/definitions/Profile"
+                    }
+                   
+                  },
+                  "404": {
+                    "description": "Farmer not found!"
+                  }
+                }
+              }
+            },
+             "/farmer/myprofile":{
+              "get": {
+                "tags": [
+                  "Farmer Service"
+                ],
+                "summary": "View Personal Profile",
+                "responses": {
+                  "200": {
+                    "description": "OK",
+                    "schema":{
+                      "$ref": "#/definitions/Profile"
+                    }   
+                  }
+                 }
+                }
+               },
+               "/deleteCrop/{id}": {
+                "parameters": [
+                  {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "description": "ID of crop to be removed",
+                    "type": "string"
+                  }
+                ],
+                "delete": {
+                  "summary": "Removes the Crop from then DB",
+                  "tags": [
+                    "Farmer Service"
+                  ],
+                  "responses": {
+                    "200": {
+                      "description": "Crop Removed sucessfully",
+                      "schema": {
+                        "$ref": "#/definitions/crops"
+                      }
+                     
+                    },
+                    "404": {
+                      "description": "Crop Not Found"
+                    }
+                  }
+                }
+              }
+          
+  },
+  "definitions": {
+    "Admin":{
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "name":{
+          "type": "string"
+        },
+        "email":{
+          "type": "string"
+        },
+        "password":{
+          "type": "string"
+        }
+          
+        }
+      },
+      "Signup":{
+        "properties": {
+          
+          "name":{
+            "type": "string"
+          },
+          "email":{
+            "type": "string"
+          },
+          "password":{
+            "type": "string"
+          }
+            
+          }
+        },
+        "Login":{
+          "properties": {
+           
+            "email":{
+              "type": "string"
+            },
+            "password":{
+              "type": "string"
+            }
+              
+            }
+          },
+          "Crops":{
+            "properties": {
+              "cropType":{
+                "type": "string"
+              },
+              "cropName":{
+                "type": "string"
+              },
+              "quantity":{
+                "type": "integer"
+              },
+              "price":{
+                "type": "integer"
+              }
+                
+              }
+            },
+            "Crop":{
+              "properties": {
+               
+                "cropName":{
+                  "type": "string"
+                },
+                "quantity":{
+                  "type": "integer"
+                },
+                "Time_Bought": {
+                  "type": "string"
+
+                }
+                
+            
+                 
+              }
+            },
+           "Profile":{
+             "properties": {
+               "Name":{
+                 "type":"string"
+               },
+               "ContactNumber":{
+                 "type":"integer"
+               },
+               "Address":{
+                 "type":"object",
+                 "items": {
+                   
+                   "properties": {
+                     "Street":{
+                       "type":"string"
+                     },
+                     "City":{
+                      "type":"string"
+                    },
+                    "State":{
+                      "type":"string"
+                    },
+                    "ZipCode":{
+                      "type":"integer"
+                    }
+                   }
+                 }
+               },
+               "Bankdetails":{
+                 "type":"object",
+                 "items": {
+                   "properties": {
+                    "accNum":{
+                      "type":"integer"
+                    },
+                    "ifscCode":{
+                      "type":"string"
+                    } 
+                   }
+                 }
+               }
+             }
+           } 
+
+    }
+  
+  
+
+   
+}
+  

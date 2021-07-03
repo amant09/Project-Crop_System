@@ -6,10 +6,10 @@ const requireAuth = (req, res, next) => {
 
   // check json web token exists & is verified
   if (token) {
-    jwt.verify(token, 'net Aman secret', (err, decodedToken) => {
+    jwt.verify(token, 'aman', (err, decodedToken) => {
       if (err) {
-        console.log(err.message);
-        res.redirect('/login');
+        console.log(err.messege);
+        res.send("user not logged in");
       } else {
         console.log(decodedToken);
         next();
@@ -24,12 +24,12 @@ const requireAuth = (req, res, next) => {
 const checkUser = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
-    jwt.verify(token, 'net Aman secret', async (err, decodedToken) => {
+    jwt.verify(token, 'aman', async (err, decodedToken) => {
       if (err) {
         res.locals.user = null;
         next();
       } else {
-        let user = await User.findById(decodedToken.id);
+        let user = await User.findById(decodedToken);
         res.locals.user = user;
         next();
       }

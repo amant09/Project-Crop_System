@@ -156,15 +156,14 @@ router.get('/viewfarmer',(req,res,next)=>{
 
     });
 });
-router.get('/viewfarmers', authencate , (req,res,next)=>{
+
+router.get
+
+router.get('/viewfarmers', (req,res,next)=>{
     axios.get("http://localhost:3000/farmer/60cf230f9d0a832b54414c9a").then((response)=>{
         var viewFarmer = response.data.name;
         res.send(viewFarmer);
-    // axios.get("http://localhost:5000/dealers").then((response)=>{
-    //     var viewDealer = response.data;
-    //     res.json(viewDealer);
-    
-    //     });
+
 
     });
 });
@@ -205,6 +204,31 @@ router.delete('/admin/:id' , (req, res) =>{
         res.json(admin);
     });
 });
+/**
+ * @swagger
+ * /admin/{id}:
+ *      delete:
+ *          summary: Delete Admin
+ *          tags : [Admins]
+ *          parameters:
+ *              - in: path
+ *                name: id
+ *                schema:
+ *                  type: string
+ *                required: true
+ *                description: Admin id        
+ *          responses:
+ *              200:
+ *                  description: Admin description by id
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: array
+ *                              items:
+ *                                  $ref: '#/components/schemas/AdminSchema'
+ *              404:
+ *                  description: Admin not found                       
+ */
 
 router.put('/admin/:id', (req,res,next)=>{
     Admin.findByIdAndUpdate({_id: req.params.id}, req.body).then(()=>{

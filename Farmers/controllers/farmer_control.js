@@ -1,5 +1,6 @@
 const User = require("../models/user");
-const {Farmer , CropDetail} = require('../models/db');
+const {Farmer , CropDetail ,FarmerDetail} = require('../models/db');
+const jwt = require('jsonwebtoken');
 
 // handle errors
 const handleErrors = (err) => {
@@ -38,7 +39,7 @@ const handleErrors = (err) => {
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
-  return jwt.sign({ id }, 'net ninja secret', {
+  return jwt.sign({ id }, 'aman', {
     expiresIn: maxAge
   });
 };
@@ -57,7 +58,9 @@ module.exports.signup_post = async (req, res) => {
 
   try {
     const user = await User.create({ email, password });
-    res.status(201).json(user);
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user: user._id });
   }
   catch(err) {
     const errors = handleErrors(err);
@@ -69,8 +72,16 @@ module.exports.signup_post = async (req, res) => {
 module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(email, password);
-  res.send('user login');
+  try {
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ user: user._id });
+  } 
+  catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
 }
 module.exports.farmer_post = async (req, res )=>{
     const { name, username, email, password } = req.body;
@@ -86,13 +97,39 @@ module.exports.farmer_post = async (req, res )=>{
  
 }
 
-module.exports.viewCrop = (req, res)=>{
-    CropDetail.find().then((crop)=>{
-        res.json(crop)
-    }).catch((err)=>{
-        if(err){
-            throw err;
-        }
-    });
+
+module.exports.farmerDetail_post = async (req, res )=>{
+  const { Name, ContactNumber , Address , BankDetails } = req.body;
+
+try {
+  const farmerprofile = await FarmerDetail.create({Name , ContactNumber , Address , BankDetails });
+  res.status(201).json(farmerprofile); 
 }
-   
+catch(err) {
+  const errors = handleErrors(err);
+  res.status(400).json({ errors });
+}
+
+module.exports.updateFarmerprofile = (req,res,next)=>{
+  FarmerDetail.findByIdAndUpdate({_id: req.params.name}, req.body).then(()=>{
+      FarmerDetail.findOne({_id: req.params.id}).then((farmer)=>{
+          res.json(farmer);
+  });
+});
+}
+}
+
+
+
+ module.exports.viewCrop = (req, res)=>{
+     CropDetail.find().then((crop)=>{
+         res.json(crop);
+     }).catch((err)=>{
+          if(err){
+             throw err;
+         }
+     })
+}
+
+
+

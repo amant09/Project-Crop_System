@@ -5,6 +5,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const bodyParser = require('body-parser');
 const router = require('./routes/api');
 const {requireAuth} = require('./AuthJwt/UserAuth')
+const cookieParser = require('cookie-parser');
 
 const options = {
     definition:{
@@ -34,19 +35,19 @@ mongoose.Promise = global.Promise;
 
 
 
-
+app.use(cookieParser());
 //configure body parser
 app.use(bodyParser.json());
 //apis
 const authController = require('./controllers/farmer_control');
-app.get('/farmerprofile/viewcrop', requireAuth ,authController.viewCrop);
+app.get('/farmerprofile/viewcrop',requireAuth, authController.viewCrop);
 app.use(router);
 
 //error handling
 app.use((err,req,res,next)=>{
     //console.log(err);
     res.sendStatus(404);
-    res.send({error: err.messege});
+    //res.send({error: err.messege});
 
 });
 

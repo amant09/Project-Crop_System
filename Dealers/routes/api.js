@@ -1,5 +1,5 @@
 const express = require('express');
-const Dealer = require('../models/db');
+const {Dealer, Crop} = require('../models/db');
 const router = express.Router();
 const authController = require('../controllers/dealerControl');
 
@@ -107,7 +107,7 @@ router.get('/dealerprofile/searchcrop/:name', authController.searchCrop);
 
 /**
  * @swagger
- * /farmer:
+ * /dealer:
  *      post:
  *          summary: create a new dealer
  *          tags: [Dealers]
@@ -172,9 +172,8 @@ router.get('/dealers' , (req, res)=>{
  *              description: id not found
  */
 router.delete('/dealer/:id' , (req, res,next) =>{
-
-
-    Dealer.findByIdAndRemove({_id: req.params.id}).then((dealer)=>{
+    const id = req.params.id;
+    Dealer.findByIdAndRemove({_id: id}).then((dealer)=>{
         res.json(dealer)
     });
 });
@@ -215,27 +214,28 @@ router.put('/dealer/:id', (req,res,next)=>{
 });
 });
 
+router.post('/buycrop',authController.buyCrop);
 
 
 
 
 
-/*app.post('/inventory', (req, res) => {
-    var newData = {
-        name: req.body.name,
-        quantity: req.body.quantity
-    }
-    var data = new dataBase(newData)
-    data.save().then(() => {
-        console.log("new data created")
-    }).catch((err) => {
-        throw err;
-    })
-    console.log(req.body);
-    res.send("data sent")
-})*/
+
+
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*const mongoose =require("mongoose");
 mongoose.model("Entry",{
@@ -248,6 +248,15 @@ mongoose.model("Entry",{
         require: true
     }
 });
+
+
+
+
+
+
+
+
+
 
 
 

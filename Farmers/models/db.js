@@ -60,6 +60,48 @@ const CropSchema = new Schema({
     }
 
 });
+
+const FarmerDetails = new Schema({
+    Name: {
+        type: String,
+        required: true
+    },
+    ContactNumber:{
+        type: Number,
+        required: true,
+        minlength: [10 , 'Enter a valid number']
+    },
+    Address:{
+        Street:{
+            type:String,
+            required : true
+        },
+        City:{
+            type:String,
+            required : true
+        },
+        State: {
+            type:String,
+            required : true
+        },
+        ZipCode:{
+            type:String,
+            required : true
+        }
+    },
+    BankDetails: {
+        accNum: {
+            type:Number,
+            required : true
+        },
+        ifscCode:{
+            type:String,
+            required : true
+        }
+    }
+});
+
+
 FarmerSchema.pre('save', async function(next) {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
@@ -69,5 +111,7 @@ FarmerSchema.pre('save', async function(next) {
 const CropDetail = mongoose.model('crop', CropSchema);
 
 const Farmer = mongoose.model('farmer', FarmerSchema);
+
+const FarmerDetail = mongoose.model('farmerdetail', FarmerDetails);
    
-module.exports = {Farmer, CropDetail};
+module.exports = {Farmer, CropDetail , FarmerDetail};

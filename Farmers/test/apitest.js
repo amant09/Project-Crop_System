@@ -26,7 +26,7 @@ describe('Get /farmers',()=>{
 //get by id
 describe('Get /farmer/:id',()=>{
     it('it should get by id',(done)=>{
-        id = '60cf93281f7b23436871cf2b';
+        id = '60d2b3c87d5ac74e7807b23e';
         chai.request(farmer)
         .get('/farmer/'+id)
         .end((err,response)=>{
@@ -59,9 +59,10 @@ describe('Get /farmer/:id',()=>{
 describe('put /farmer/:id',()=>{
     it('it should update data',(done)=>{
         user = {
-            name:"Aman11",
+            name:"Aman1test",
+            username: "test1"
         }
-        id = '60cf93281f7b23436871cf2b';
+        id = '60dc8cfa6197824630f8e6f0';
         chai.request(farmer)
         .put('/farmer/'+id)
         .send(user)
@@ -81,6 +82,19 @@ describe('delete /farmer/:id',()=>{
         .delete('/farmer/'+id)
         .end((err,response)=>{
             response.should.have.status(200);
+        done();
+        })
+    })
+})
+
+
+describe('delete /farmer/:id',()=>{
+    it('it should not delete data',(done)=>{
+        id = '60cf93011f7b23436871c';
+        chai.request(farmer)
+        .delete('/farmer/'+id)
+        .end((err,response)=>{
+            response.should.have.status(404);
         done();
         })
     })

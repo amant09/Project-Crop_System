@@ -1,8 +1,12 @@
 const express = require('express');
-const {Farmer , CropDetail} = require('../models/db');
+const {Farmer , CropDetail, FarmerDetail} = require('../models/db');
 const router = express.Router();
 const authController = require('../controllers/farmer_control');
 const User = require('../models/user');
+const cookieParser = require('cookie-parser');
+const { requireAuth } = require('../AuthJwt/UserAuth');
+const app = express();
+app.use(cookieParser);
 
 
 
@@ -320,7 +324,26 @@ router.get('/farmer/:id', (req , res, next)=>{
     });
 router.post('/farmer',authController.farmer_post);
 
-router.get('/farmers' , (req, res)=>{
+
+//Update Farmer Details
+router.post('/farmerprofile',authController.farmerDetail_post);
+router.get('/farmerprofile',(req,res)=>{
+    FarmerDetail.find().then((response)=>{
+        res.json(response)
+    })
+})
+
+router.put('/farmerprofile/:id', (req,res,next)=>{
+    const id = req.params.id
+    FarmerDetail.findOneAndUpdate({_id: id}, req.body).then(()=>{
+        FarmerDetail.findOne({_id: id}).then((farmer1)=>{
+            res.json(farmer1);
+    });
+  });
+  }
+  );
+
+router.get('/farmers' , (req , res)=>{
     Farmer.find().then((farmers)=>{
         res.json(farmers)
     }).catch((err)=>{
@@ -330,15 +353,17 @@ router.get('/farmers' , (req, res)=>{
     });
 });
 router.delete('/farmer/:id' , (req, res,next) =>{
-    Farmer.findByIdAndRemove({_id: req.params.id}).then((farmer)=>{
+    const id = req.params.id
+    Farmer.findOneAndRemove({_id: id}).then((farmer)=>{
         res.json(farmer)
-    });
+    }).catch(next);
 });
 
 
 router.put('/farmer/:id', (req,res,next)=>{
-    Farmer.findByIdAndUpdate({_id: req.params.id}, req.body).then(()=>{
-        Farmer.findOne({_id: req.params.id}).then((farmer)=>{
+    const id = req.params.id
+    Farmer.findByIdAndUpdate({_id: id}, req.body).then(()=>{
+        Farmer.findOne({_id: id}).then((farmer)=>{
             res.json(farmer);
     });
 });
@@ -346,7 +371,7 @@ router.put('/farmer/:id', (req,res,next)=>{
 
 //CRUD on Crops
 
-router.post('/farmerprofile/addcrop',(req,res)=>{
+router.post('/addcrop',(req,res)=>{
     var crop = new CropDetail(req.body);
     crop.save().then((crop)=>{
         res.send(crop);
@@ -357,7 +382,7 @@ router.post('/farmerprofile/addcrop',(req,res)=>{
     });
 });
 
-router.get('/farmerprofile/viewcrops' , (req, res)=>{
+router.get('/viewcrops' , (req, res)=>{
     CropDetail.find().then((crop)=>{
         res.json(crop)
     }).catch((err)=>{
