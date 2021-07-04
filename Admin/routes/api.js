@@ -198,11 +198,11 @@ router.get('/viewdealer',(req,res,next)=>{
 });
 
 
-router.delete('/admin/:id' , (req, res) =>{
+router.delete('/admin/:id' , (req, res, next) =>{
 
     Admin.findByIdAndRemove({_id: req.params.id}).then((admin)=>{
         res.json(admin);
-    });
+    }).catch(next);
 });
 /**
  * @swagger
@@ -235,7 +235,7 @@ router.put('/admin/:id', (req,res,next)=>{
         Admin.findOne({_id: req.params.id}).then((admin)=>{
             res.json(admin);
     }).catch(next);
-});
+}).catch(next);
 });
 
 module.exports = router;

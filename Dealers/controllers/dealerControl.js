@@ -1,6 +1,6 @@
 //const axios = require('axios');
 const MongoClient = require('mongodb').MongoClient;
-
+const {Crop} = require('../models/db')
 
 module.exports.searchCrop = (req , res )=> {
     

@@ -175,7 +175,7 @@ router.delete('/dealer/:id' , (req, res,next) =>{
     const id = req.params.id;
     Dealer.findByIdAndRemove({_id: id}).then((dealer)=>{
         res.json(dealer)
-    });
+    }).catch(next);
 });
 
 
@@ -210,7 +210,7 @@ router.put('/dealer/:id', (req,res,next)=>{
     Dealer.findByIdAndUpdate({_id: req.params.id}, req.body).then(()=>{
         Dealer.findOne({_id: req.params.id}).then((dealer)=>{
             res.json(dealer);
-    });
+    }).catch(next);
 });
 });
 

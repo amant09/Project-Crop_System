@@ -26,7 +26,7 @@ describe('Get /admins',()=>{
 //get by id
 describe('Get /admin/:id',()=>{
     it('it should get by id',(done)=>{
-        id = '60d2d002f77eac55f8acd8d2';
+        id = '60d2d01bf77eac55f8acd8d4';
         chai.request(admin)
         .get('/admin/'+id)
         .end((err,response)=>{
@@ -40,9 +40,9 @@ describe('Get /admin/:id',()=>{
 // describe('post /admin',()=>{
 //     it('it should post data',(done)=>{
 //         user = {
-//             name:"admins1",
-//             username: "newadmin",
-//             email:"admin128@gmail.com",
+//             name:"admin1",
+//             username: "newadmintest",
+//             email:"admintest128@gmail.com",
 //             password:"qwerty"
             
 //         }
@@ -60,9 +60,11 @@ describe('Get /admin/:id',()=>{
 describe('put /admin/:id',()=>{
     it('it should update data',(done)=>{
         user = {
-            name:"Aman11 Tiwari",
+            
+            email: "admintest@abc.com",
+            password: "123admin"
         }
-        id = '60d2d01bf77eac55f8acd8d4';
+        id = '60cb3c673fd9071bb847ee30';
         chai.request(admin)
         .put('/admin/'+id)
         .send(user)
@@ -74,14 +76,48 @@ describe('put /admin/:id',()=>{
         })
     })
 }) 
+
+
+describe('put /admin/:id',()=>{
+    it('it should not update data',(done)=>{
+        user = {
+            email: "admintest@abc.com",
+            password: "123admin"
+        }
+        id = '60cb3c673fd9071bb847e';
+        chai.request(admin)
+        .put('/admin/'+id)
+        .send(user)
+        .end((err,response)=>{
+            response.should.have.status(404);
+           
+            
+        done();
+        })
+    })
+}) 
 //delete
 describe('delete /admin/:id',()=>{
     it('it should delete data',(done)=>{
-        id = '60cb38ac022274307cd4c52c';
+        id = '60d2d0bcb32bd85e683c098b';
         chai.request(admin)
         .delete('/admin/'+id)
         .end((err,response)=>{
             response.should.have.status(200);
+        done();
+        })
+    })
+})
+
+
+
+describe('delete /admin/:id',()=>{
+    it('it should not delete data',(done)=>{
+        id = '60d2d0bcb32bd85e683c0';
+        chai.request(admin)
+        .delete('/admin/'+id)
+        .end((err,response)=>{
+            response.should.have.status(404);
         done();
         })
     })

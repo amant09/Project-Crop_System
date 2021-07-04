@@ -34,6 +34,13 @@ const router = require('./routes/api')
 app.use(router);
 
 
+//error handling
+app.use((err,req,res,next)=>{
+    //console.log(err);
+    res.sendStatus(404);
+    //res.send({error: err.messege});
+
+});
 
 const port = process.env.PORT || 4000;
 app.listen(port);

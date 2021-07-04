@@ -9,11 +9,7 @@ try {
     }catch (error) { 
     console.log("could not connect");    
     }
-
-
-
-
-    var Schema = mongoose.Schema;
+var Schema = mongoose.Schema;
 
 const DealerSchema = new Schema({
     name: {
@@ -36,8 +32,23 @@ const DealerSchema = new Schema({
     }
 
 });
+const cropSchema = new Schema({
+    cropName : {
+        required: true,
+        type: String
+    },
+    quantity : {
+        type : Number,
+        required: true
+    },
+    Time_Bought : {
+        type : Date,
+        default : Date.now()
+    
+    } 
+});
 
 
 const Dealer = mongoose.model('dealer', DealerSchema);
-   
-module.exports = Dealer;
+const Crop = mongoose.model('cart', cropSchema);
+module.exports = {Dealer, Crop};

@@ -35,6 +35,7 @@ mongoose.Promise = global.Promise;
 
 
 
+
 //configure body parser
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -42,6 +43,13 @@ const router = require('./routes/api')
 app.use(router);
 
 
+//error handling
+app.use((err,req,res,next)=>{
+    //console.log(err);
+    res.sendStatus(404);
+    //res.send({error: err.messege});
+
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port);

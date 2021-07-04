@@ -238,7 +238,7 @@ router.post('/login', authController.login_post);
 
 /**
  * @swagger
- * /farmerprofile/addcrop:
+ * /addcrop:
  *      post:
  *          summary: Add a crop
  *          tags: [Crops]
@@ -402,9 +402,8 @@ router.get('/farmerprofile/viewcrop' , (req, res)=>{
 });
 
 router.delete('/farmerprofile/viewcrop/:id' , (req, res,next) =>{
-
-
-    CropDetail.findByIdAndRemove({_id: req.params.id}).then((crop)=>{
+    const id = req.params.id
+    CropDetail.findByIdAndRemove({_id: id}).then((crop)=>{
         res.json(crop)
     }).catch(next);
 });
